@@ -1,25 +1,27 @@
 package com.kodilla.stream;
 
-import com.kodilla.stream.beautifier.PoemBeautifier;
-import com.kodilla.stream.iterate.NumbersGenerator;
+import com.kodilla.stream.forumuser.Forum;
+import com.kodilla.stream.forumuser.ForumUser;
 
-import static jdk.nashorn.internal.objects.NativeString.toLowerCase;
-import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StreamMain {
     public static void main(String[] args) {
+        Forum forumUserList = new Forum();
 
-        // chapter 1
-        PoemBeautifier poemBeautifier = new PoemBeautifier();
+        Map<Integer, ForumUser> theResultMap = forumUserList.getUserList().stream()
+                .filter(forumUser -> forumUser.getSex() == 'M')
+                .filter(forumUser -> Period.between(forumUser.getDateOfBirth(), LocalDate.now()).getYears() > 20)
+                .filter(forumUser -> forumUser.getPostNumber() > 0)
+                .collect(Collectors.toMap(ForumUser::getId, forumUser -> forumUser));
 
-        poemBeautifier.beautify("Tekst który będzie dużymi literami", (text) -> toUpperCase(text));
-        poemBeautifier.beautify("Tekst i gwiazdki", (text) -> "***" + text + "***");
-        poemBeautifier.beautify("Tekst który będzie MALYMI literami", (text) -> toLowerCase(text));
-        poemBeautifier.beautify("Piekny teskt", (text) -> "Inny piekniejszy tekst");
-
-        // chapter 2
-        System.out.println("Using Stream to generate even numbers from 1 to 20");
-        NumbersGenerator.generateEven(20);
+        System.out.println("# elements: " + theResultMap.size());
+        theResultMap.entrySet().stream()
+                .map(entry -> entry.getKey() + ": " + entry.getValue())
+                .forEach(System.out::println);
 
     }
 }
