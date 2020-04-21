@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class Continent {
     private final List<Country> countryList = new ArrayList<Country>();
-    private final String continentName;
+    private final String name;
 
-    public Continent(String continentName) {
-        this.continentName = continentName;
+    public Continent(String name) {
+        this.name = name;
     }
 
     public boolean addCountryToList(Country country) {
@@ -20,11 +22,18 @@ public class Continent {
         return countryList;
     }
 
+    public BigDecimal getPeopleQuantity() {
+        BigDecimal continentPopulation = countryList.stream()
+                 .map(Country::getPeopleQuantity)
+                 .reduce(BigDecimal.ZERO, (sum, current) -> sum = sum.add(current));
+        return continentPopulation;
+    }
+
     @Override
     public String toString() {
         return "Continent{" +
                 "countryList=" + countryList +
-                ", continentName='" + continentName + '\'' +
+                ", continentName='" + name + '\'' +
                 '}';
     }
 }
