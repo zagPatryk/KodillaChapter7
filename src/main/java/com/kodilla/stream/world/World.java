@@ -4,27 +4,25 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 public class World {
-    private final List<Continent> continentList = new ArrayList<Continent>();
+    private final List<Continent> list = new ArrayList<Continent>();
 
     public boolean addContinent(Continent continent) {
-        continentList.add(continent);
+        list.add(continent);
         return true;
     }
 
     public BigDecimal getPeopleQuantity() {
-        BigDecimal worldPopulation = continentList.stream()
+        BigDecimal peopleQuantity = list.stream()
                 .map(Continent::getPeopleQuantity)
                 .reduce(BigDecimal.ZERO, (sum, current) -> sum = sum.add(current));
-        return worldPopulation;
+        return peopleQuantity;
     }
 
     @Override
     public String toString() {
         return "World{" +
-                "continentList=" + continentList +
+                "continentList=" + list +
                 '}';
     }
 }

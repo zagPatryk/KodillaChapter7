@@ -16,4 +16,8 @@ public class ForumUser {
     public String getRealName() {
         return realName;
     }
+
+//    public void modUs(String name) {
+//        username = name;
+//    }
 }
